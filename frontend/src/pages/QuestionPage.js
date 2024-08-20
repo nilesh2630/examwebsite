@@ -28,7 +28,7 @@ const Questionpage = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                const { data } = await axios.get(`http://localhost:5000/api/test/${testId}`, config);
+                const { data } = await axios.get(`https://examwebsite.onrender.com/api/test/${testId}`, config);
                 setQuestions(data);
             } catch (error) {
                 toast.error('Failed to fetch questions.');
@@ -81,7 +81,7 @@ const Questionpage = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.post('http://localhost:5000/api/submissions/save', {
+            await axios.post('https://examwebsite.onrender.com/api/submissions/save', {
                 testId,
                 selections: [{ questionId, option }]
             }, config);
@@ -98,7 +98,7 @@ const Questionpage = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.post('http://localhost:5000/api/submissions/submit', { testId }, config);
+            await axios.post('https://examwebsite.onrender.com/api/submissions/submit', { testId }, config);
             toast.success('Test submitted successfully!');
             navigate('/testpage');
         } catch (error) {

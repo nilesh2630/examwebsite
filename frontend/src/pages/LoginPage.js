@@ -15,7 +15,7 @@ const LoginPage = () => {
             return;
         }
         try {
-            const { data } = await axios.post('http://localhost:5000/api/users/login', { email, password });
+            const { data } = await axios.post('https://examwebsite.onrender.com/api/users/login', { email, password });
             localStorage.setItem("userinfo",JSON.stringify(data));
             toast.success('Login successful!');
             navigate('/testpage');

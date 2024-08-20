@@ -43,7 +43,7 @@ const SignupPage = () => {
                 'Content-Type': 'application/json',
             }
           }
-          const {data}=await axios.post('http://localhost:5000/api/users',formData,config)
+          const {data}=await axios.post('https://examwebsite.onrender.com/api/users',formData,config)
           console.log(data);
           toast.success('User created successfully!');
           localStorage.setItem("userinfo",JSON.stringify(data));

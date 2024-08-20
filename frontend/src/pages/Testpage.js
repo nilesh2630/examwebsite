@@ -23,7 +23,7 @@ const TestPage = () => {
             };
             const fetchTests = async () => {
                 try {
-                    const { data } = await axios.get('http://localhost:5000/api/test', config);
+                    const { data } = await axios.get('https://examwebsite.onrender.com/api/test', config);
                     setTest(data);
                     console.log(data);
                 } catch (error) {
