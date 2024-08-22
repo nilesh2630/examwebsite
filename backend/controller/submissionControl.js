@@ -10,13 +10,13 @@ const nodemailer = require('nodemailer');
 const saveSelection = async (req, res) => {
     try {
         const { testId, selections } = req.body;
-        const userId = req.user._id; // Accessing user ID from the request object
+        const userId = req.user._id; 
 
-        // Check if there is an existing submission for the test and user
+       
         let submission = await Submission.findOne({ testId, userId });
 
         if (!submission) {
-            // If no submission exists, create a new one
+         
             submission = new Submission({
                 testId,
                 userId,
@@ -72,7 +72,7 @@ const submitTest = async (req, res) => {
     }
 };
 
-// Function to calculate total marks
+
 const calculateTotalMarks = async (selections) => {
     let totalMarks = 0;
 
@@ -81,7 +81,7 @@ const calculateTotalMarks = async (selections) => {
 
         if (questions && !questions.isDeleted) {
             if (selection.option === questions.correctOption) {
-                totalMarks += question.marks; 
+                totalMarks += questions.marks; 
             }
         }
     }
@@ -94,12 +94,12 @@ async function sendEmail(recipientEmail, subject, text) {
         service: 'gmail', 
         auth: {
             user: 'ng.niesh123@gmail.com', 
-            pass: process.env.PASS, // Ensure this environment variable is set
+            pass: process.env.PASS, 
         },
     });
 
     const mailOptions = {
-        from: 'ng.niesh123@gmail.com', // Replace with your email
+        from: 'ng.niesh123@gmail.com', 
         to: recipientEmail,
         subject: subject,
         text: text,
@@ -113,7 +113,7 @@ async function sendEmail(recipientEmail, subject, text) {
     }
 }
 
-// Cron job to check submissions every 2 minutes
+
 cron.schedule('0 * * * *', async () => {
     try {
         console.log('Checking submissions...');
@@ -122,10 +122,9 @@ cron.schedule('0 * * * *', async () => {
 
         for (const submission of submissions) {
             const userId = submission.userId;
-            const user = await User.findById(userId); // Assuming you have a User model
-
+            const user = await User.findById(userId); 
             if (user) {
-                const totalMarks = await calculateTotalMarks(submission.selections); // Ensure this is awaited
+                const totalMarks = await calculateTotalMarks(submission.selections); 
                 const subject = 'Test Results';
                 const text = `You have scored ${totalMarks} marks in the test.`;
                 await sendEmail(user.email, subject, text);

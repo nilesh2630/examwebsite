@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const cors = require('cors');
 const userRoutes = require("./routes/userRoutes");
-const testRoutes = require("./routes/testRoutes"); // Corrected the variable name
+const testRoutes = require("./routes/testRoutes"); 
 const submissionRoute=require('./routes/submissionRoute')
 dotenv.config();
 connectDB();
