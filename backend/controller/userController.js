@@ -4,7 +4,7 @@ const generateToken=require("../config/generateToken")
 
 
 const registerUser =asyncHandler( async (req, res) => {
-    console.log("hii");
+    
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
