@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link if using react-router for navigation
+import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 import { toast } from 'react-toastify'; 
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+
 const SignupPage = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
     });
-
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
-    useEffect(()=>{
-        const user=JSON.parse(localStorage.getItem("userinfo"))
-        if(user)  navigate('/testpage');
-      },[navigate])
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("userinfo"));
+        if (user) navigate('/testpage');
+    }, [navigate]);
+
     const handleChange = (e) => {
-        
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -25,7 +27,7 @@ const SignupPage = () => {
         });
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
        
         if (!formData.name || !formData.email || !formData.password) {
@@ -37,28 +39,33 @@ const SignupPage = () => {
             toast.error('Password must be at least 8 characters long.'); 
             return;
         }
-       try{
-          const config={
-            headers:{
-                'Content-Type': 'application/json',
-            }
-          }
-          const {data}=await axios.post('https://examwebsite.onrender.com/api/users',formData,config)
-          console.log(data);
-          toast.success('User created successfully!');
-          localStorage.setItem("userinfo",JSON.stringify(data));
-          navigate('/testpage');
-       }catch(err){
 
-       }
-        
-       
+        try {
+            setLoading(true); // Start loading
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            const { data } = await axios.post('https://examwebsite.onrender.com/api/users', formData, config);
+            console.log(data);
+            toast.success('User created successfully!');
+            localStorage.setItem("userinfo", JSON.stringify(data));
+            navigate('/testpage');
+        } catch (err) {
+            toast.error('An error occurred. Please try again.'); 
+        } finally {
+            setLoading(false); 
+        }
     };
 
     return (
         <div className="bg-gray-100 flex items-center justify-center min-h-screen">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-semibold mb-6 text-gray-700">Create an Account</h2>
+                {loading && ( 
+                    <div className="mb-4 text-center">Creating your account, please wait...</div>
+                )}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-gray-600 mb-2">Name</label>
@@ -66,10 +73,10 @@ const SignupPage = () => {
                             type="text"
                             id="name"
                             name="name"
-                            value={formData.username}
+                            value={formData.name} 
                             onChange={handleChange}
                             className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="Username"
+                            placeholder="Name" 
                             required
                         />
                     </div>
